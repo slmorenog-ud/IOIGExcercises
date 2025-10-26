@@ -1,0 +1,237 @@
+\documentclass[a4paper,9pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{array} % Necesario para la columna p{...}
+\usepackage{fancyhdr}
+\usepackage[spanish]{babel}
+\usepackage{xcolor} % Para los colores
+
+% --- PAQUETE AÑADIDO PARA IMÁGENES ---
+\usepackage{graphicx} % Para \includegraphics
+
+% --- DEFINICIÓN DE COLORES (para el texto) ---
+\definecolor{critico}{RGB}{227, 74, 51}
+\definecolor{nocritico}{RGB}{51, 115, 227}
+
+% Configuración de márgenes
+\geometry{
+ a4paper,
+ left=2.5cm,
+ right=2.5cm,
+ top=2.5cm,
+ bottom=2.5cm
+}
+
+% Configuración del encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize Universidad Distrital Francisco José de Caldas - Ingeniería de Sistemas}
+\fancyhead[R]{\footnotesize IO II}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{Ejercicio de Técnicas de Planeación de Redes: Análisis de tiempos}}
+\author{Grupo 3}
+\date{26 de octubre de 2025}
+
+
+\begin{document}
+\maketitle
+
+\section*{Implementación de un Sistema de Gestión Empresarial (SGE)}
+
+Las actividades descritas en la siguiente tabla definen el proyecto de desarrollo e implementación de un nuevo Sistema de Gestión (SGE). Se requiere construir la red del proyecto asociada para determinar la ruta crítica y la duración total.
+
+\begin{table}[h]
+\centering
+\caption{Actividades del proyecto de Implementación del SGE}
+\label{tab:problema647_sistemas}
+\begin{tabular}{@{}cllc@{}}
+\toprule
+\textbf{Actividad} & \textbf{Descripción} & \textbf{Predecesora(s)} & \textbf{Duración (días)} \\
+\midrule
+A & Definición de Requerimientos Iniciales & --- & 1 \\
+B & Establecimiento del Ambiente de Desarrollo (DevOps) & --- & 2 \\
+C & Diseño Conceptual de la Arquitectura & A & 1 \\
+D & Diseño Detallado de Módulos Base & C & 2 \\
+E & Configuración de APIs y Servicios Externos & B, C & 6 \\
+F & Desarrollo del Código Principal (Módulos Centrales) & D & 10 \\
+G & Desarrollo de la Interfaz de Usuario (Frontend) & F & 3 \\
+H & Pruebas Unitarias de la Interfaz & G & 1 \\
+I & Pruebas de Integración del Backend & F & 1 \\
+J & Documentación de la Arquitectura de Integración & E, H & 5 \\
+K & Preparación de Scripts de Migración (Fase 1) & I & 2 \\
+L & Desarrollo de Reportes Personalizados (Fase 1) & F, J & 1 \\
+M & Diseño de la Ayuda en Línea y Manuales de Usuario & F & 2 \\
+N & Pruebas de Carga y Rendimiento (Fase 1) & L, M & 4 \\
+O & Pruebas de Seguridad y Acceso & G, J & 2 \\
+P & Aseguramiento de Calidad (QA) - Pruebas Funcionales & O & 2 \\
+Q & Validación de Seguridad y Migración (Final) & I, P & 1 \\
+R & Documentación de Despliegue y Mantenimiento & P & 7 \\
+S & Capacitación a Usuarios Clave & I, N & 7 \\
+T & Despliegue en Entorno de Producción & S & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Actividades del proyecto de Implementación del SGE}
+\label{tab:problema647_sistemas}
+\begin{tabular}{@{}clc@{}}
+\toprule
+\textbf{Actividad} & \textbf{Predecesora(s)} & \textbf{Duración (días)} \\
+\midrule
+A & --- & 1 \\
+B & --- & 2 \\
+C & A & 1 \\
+D & C & 2 \\
+E & B, C & 6 \\
+F & D & 10 \\
+G & F & 3 \\
+H & G & 1 \\
+I & F & 1 \\
+J & E, H & 5 \\
+K & I & 2 \\
+L & F, J & 1 \\
+M & F & 2 \\
+N & L, M & 4 \\
+O & G, J & 2 \\
+P & O & 2 \\
+Q & I, P & 1 \\
+R & P & 7 \\
+S & I, N & 7 \\
+T & S & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Solución del Problema (Método de la Ruta Crítica - CPM)}
+% ... (El texto de la solución sigue igual) ...
+Para determinar la ruta crítica y la duración total del proyecto, utilizaremos el Método de la Ruta Crítica (CPM). Este método implica tres pasos principales:
+\begin{enumerate}
+    \item \textbf{Recorrido hacia Adelante:} Calcular los tiempos de inicio más temprano (ES - Early Start) y finalización más temprana (EF - Early Finish) para cada actividad.
+    \item \textbf{Recorrido hacia Atrás:} Calcular los tiempos de inicio más tardío (LS - Late Start) y finalización más tardía (LF - Late Finish) para cada actividad.
+    \item \textbf{Cálculo de la Holgura (Slack):} Determinar la holgura de cada actividad (Holgura = LS - ES).
+\end{enumerate}
+
+Las actividades con holgura cero ($Holgura = 0$) forman la ruta crítica.
+
+\subsection*{Paso 1 y 2: Recorridos hacia Adelante (ES/EF) y Atrás (LS/LF)}
+\textbf{Recorrido hacia Adelante (ES/EF):}
+\begin{itemize}
+    \item $ES = 0$ para actividades iniciales (A, B).
+    \item $ES = \max(EF \text{ de todas las predecesoras})$ para las demás.
+    \item $EF = ES + \text{Duración}$.
+\end{itemize}
+
+\textbf{Recorrido hacia Atrás (LS/LF):}
+\begin{itemize}
+    \item Se determina la duración total del proyecto ($T_{total}$) como el $EF$ máximo de todas las actividades finales. En este caso, $T_{total} = 38$ días.
+    \item $LF = T_{total}$ para todas las actividades finales (K, Q, R, T).
+    \item $LF = \min(LS \text{ de todas las sucesoras})$ para las demás.
+    \item $LS = LF - \text{Duración}$.
+\end{itemize}
+
+\subsection*{Paso 3: Tabla de Resultados y Cálculo de Holgura}
+% ... (La tabla de longtable sigue igual) ...
+La siguiente tabla resume los cálculos de ES, EF, LS, LF y la Holgura ($LS - ES$).
+
+\begin{longtable}{@{}lccccccl@{}}
+\caption{Cálculos del Método de la Ruta Crítica (CPM)}
+\label{tab:resultados_cpm} \\
+\toprule
+\textbf{Actividad} & \textbf{Duración} & \textbf{ES} & \textbf{EF} & \textbf{LS} & \textbf{LF} & \textbf{Holgura} & \textbf{¿Crítica?} \\
+ & (días) & (ES) & (EF=ES+Dur) & (LS=LF-Dur) & (LF) & (LS-ES) & \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Actividad} & \textbf{Duración} & \textbf{ES} & \textbf{EF} & \textbf{LS} & \textbf{LF} & \textbf{Holgura} & \textbf{¿Crítica?} \\
+ & (días) & (ES) & (EF=ES+Dur) & (LS=LF-Dur) & (LF) & (LS-ES) & \\
+\midrule
+\endhead
+A & 1 & 0 & 1 & 0 & 1 & 0 & \textbf{Sí} \\
+B & 2 & 0 & 2 & 10 & 12 & 10 & No \\
+C & 1 & 1 & 2 & 1 & 2 & 0 & \textbf{Sí} \\
+D & 2 & 2 & 4 & 2 & 4 & 0 & \textbf{Sí} \\
+E & 6 & 2 & 8 & 12 & 18 & 10 & No \\
+F & 10 & 4 & 14 & 4 & 14 & 0 & \textbf{Sí} \\
+G & 3 & 14 & 17 & 14 & 17 & 0 & \textbf{Sí} \\
+H & 1 & 17 & 18 & 17 & 18 & 0 & \textbf{Sí} \\
+I & 1 & 14 & 15 & 27 & 28 & 13 & No \\
+J & 5 & 18 & 23 & 18 & 23 & 0 & \textbf{Sí} \\
+K & 2 & 15 & 17 & 36 & 38 & 21 & No \\
+L & 1 & 23 & 24 & 23 & 24 & 0 & \textbf{Sí} \\
+M & 2 & 14 & 16 & 22 & 24 & 8 & No \\
+N & 4 & 24 & 28 & 24 & 28 & 0 & \textbf{Sí} \\
+O & 2 & 23 & 25 & 27 & 29 & 4 & No \\
+P & 2 & 25 & 27 & 29 & 31 & 4 & No \\
+Q & 1 & 27 & 28 & 37 & 38 & 10 & No \\
+R & 7 & 27 & 34 & 31 & 38 & 4 & No \\
+S & 7 & 28 & 35 & 28 & 35 & 0 & \textbf{Sí} \\
+T & 3 & 35 & 38 & 35 & 38 & 0 & \textbf{Sí} \\
+\bottomrule
+\end{longtable}
+
+
+% --- INICIO DE LA SECCIÓN DE GRÁFICOS (CON IMÁGENES) ---
+
+\section*{Análisis Gráfico del Proyecto}
+Los resultados numéricos de la Tabla \ref{tab:resultados_cpm} se pueden visualizar mediante dos herramientas gráficas clave: el diagrama de red AON, que muestra las dependencias, y el diagrama de Gantt, que ilustra el cronograma.
+
+\subsection*{Diagrama de Red AON (Actividad en el Nodo)}
+
+El siguiente diagrama (Figura \ref{fig:aon_diagram}) representa el flujo lógico del proyecto. Cada nodo es una actividad, y las flechas indican las dependencias. La ruta crítica se resalta para mostrar el camino de actividades sin holgura.
+
+\begin{figure}[h!]
+\centering
+% Asegúrate de tener un archivo 'diagrama_aon.png' en la misma carpeta
+\includegraphics[width=0.9\textwidth]{diagrama_aon.png}
+\caption{Diagrama de Red AON del proyecto SGE. (Generado con Mermaid.js)}
+\label{fig:aon_diagram}
+\end{figure}
+
+
+\subsection*{Diagrama de Gantt}
+
+El diagrama de Gantt (Figura \ref{fig:gantt_chart}) muestra el cronograma del proyecto en 38 días. Este gráfico permite visualizar qué tareas se solapan y la secuencia temporal de todas las actividades, resaltando las tareas críticas.
+
+\begin{figure}[h!]
+\centering
+% Asegúrate de tener un archivo 'diagrama_gantt.png' en la misma carpeta
+\includegraphics[width=\textwidth]{diagrama_gantt.png}
+\caption{Diagrama de Gantt del proyecto SGE. (Generado con Mermaid.js)}
+\label{fig:gantt_chart}
+\end{figure}
+
+\clearpage % Forza a que la conclusión empiece en una nueva página si es necesario
+
+% --- FIN DE LA SECCIÓN DE GRÁFICOS ---
+
+
+\section*{Conclusión Analítica del Proyecto}
+
+El análisis del proyecto de implementación del SGE mediante el Método de la Ruta Crítica (CPM) ha revelado los factores clave que determinarán el éxito de su cronograma.
+
+\begin{enumerate}
+    \item \textbf{Duración y Foco Principal:} La duración mínima total del proyecto es de \textbf{38 días}. El cumplimiento de esta fecha depende estrictamente del monitoreo y control de la ruta crítica identificada (visible en las Figuras \ref{fig:aon_diagram} y \ref{fig:gantt_chart}):
+    $$ \mathbf{A \rightarrow C \rightarrow D \rightarrow F \rightarrow G \rightarrow H \rightarrow J \rightarrow L \rightarrow N \rightarrow S \rightarrow T} $$
+    Estas 11 actividades tienen una holgura de cero días, lo que significa que cualquier retraso en una de ellas impactará directamente la fecha de entrega final.
+
+    \item \textbf{Flexibilidad y Gestión de Recursos:} El análisis de holguras (presentado en la Tabla \ref{tab:resultados_cpm}) muestra una flexibilidad operativa considerable en varias rutas no críticas. Destacan las actividades:
+    \begin{itemize}
+        \item \textbf{K (Preparación de Scripts):} Con 21 días de holgura.
+        \item \textbf{I (Pruebas de Integración):} Con 13 días de holgura.
+        \item \textbf{B (Ambiente DevOps) y E (Configuración de APIs):} Ambas con 10 días de holgura.
+    \end{itemize}
+
+    \item \textbf{Implicación Estratégica:} Esta flexibilidad es la principal herramienta del gerente del proyecto. Los recursos asignados a tareas con alta holgura (como K o I) pueden ser reasignados temporalmente para "rescatar" actividades de la ruta crítica que puedan estar experimentando retrasos, todo esto sin afectar la duración total de 38 días.
+\end{enumerate}
+
+En resumen, el proyecto tiene un "camino principal" muy definido y sensible al tiempo, pero está rodeado de tareas secundarias que ofrecen un colchón significativo. El éxito radicará en \textbf{proteger la ruta crítica} a toda costa, mientras se \textbf{aprovecha la holgura} de las demás rutas para gestionar proactivamente los riesgos.
+
+\end{document}
